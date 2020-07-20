@@ -62,7 +62,7 @@ class LocationAdapter(private val locationList : ArrayList<LocationData>,val con
             delteLocation(position)
         }
         holder.buttonEdit.setOnClickListener {
-            this.locationInterface.onEditLocationClick(currentItem)
+            this.locationInterface.onEditLocationClick(currentItem,position)
 
         }
     }

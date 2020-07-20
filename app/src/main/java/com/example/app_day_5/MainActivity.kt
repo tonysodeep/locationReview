@@ -12,11 +12,13 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
+import java.text.FieldPosition
 
 var locationArray = ArrayList<LocationData>()
 private lateinit var linearLayoutManager: LinearLayoutManager
 private var addLocationCode : Int = 1
 private var editLocationCode : Int = 2
+private var editPositionInLocation : Int = 0
 class MainActivity : AppCompatActivity(),onItemClick {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -83,10 +85,11 @@ class MainActivity : AppCompatActivity(),onItemClick {
         Toast.makeText(this,"item deleted",Toast.LENGTH_LONG).show()
     }
 
-    override fun onEditLocationClick(data: LocationData) {
+    override fun onEditLocationClick(data: LocationData,position: Int) {
         val intent = Intent(this,EditLocation::class.java)
         intent.putExtra("edit_data",data)
-        startActivityForResult(intent, editLocationCode)
+        editPositionInLocation = position
+        startActivityForResult(intent,editLocationCode)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -104,7 +107,10 @@ class MainActivity : AppCompatActivity(),onItemClick {
             }
             if (requestCode == editLocationCode && resultCode == Activity.RESULT_OK){
                 val locationEdit : LocationData = data.getSerializableExtra("edit_data") as LocationData
-
+                locationArray.set(editPositionInLocation,locationEdit)
+                var touradapter = LocationAdapter(locationArray,this)
+                tour_rv.adapter = touradapter
+                touradapter.setLocationInterFace(this)
             }
             else{
                 Log.d("AAA","CANCEL EDIT")
