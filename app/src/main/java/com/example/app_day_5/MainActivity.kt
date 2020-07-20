@@ -16,6 +16,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 var locationArray = ArrayList<LocationData>()
 private lateinit var linearLayoutManager: LinearLayoutManager
 private var addLocationCode : Int = 1
+private var editLocationCode : Int = 2
 class MainActivity : AppCompatActivity(),onItemClick {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,22 +86,30 @@ class MainActivity : AppCompatActivity(),onItemClick {
     override fun onEditLocationClick(data: LocationData) {
         val intent = Intent(this,EditLocation::class.java)
         intent.putExtra("edit_data",data)
-        startActivity(intent)
+        startActivityForResult(intent, editLocationCode)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (data != null) {
-            if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == addLocationCode && resultCode == Activity.RESULT_OK) {
                 val location : LocationData = data.getSerializableExtra("return_location") as LocationData
                 locationArray.add(0,location)
                 var touradapter = LocationAdapter(locationArray,this)
                 tour_rv.adapter = touradapter
                 touradapter.setLocationInterFace(this)
 
-            } else {
+            }else {
                 Log.d("AAA","CANCEL")
             }
+            if (requestCode == editLocationCode && resultCode == Activity.RESULT_OK){
+                val locationEdit : LocationData = data.getSerializableExtra("edit_data") as LocationData
+
+            }
+            else{
+                Log.d("AAA","CANCEL EDIT")
+            }
+
         }
     }
 }

@@ -63,6 +63,7 @@ class LocationAdapter(private val locationList : ArrayList<LocationData>,val con
         }
         holder.buttonEdit.setOnClickListener {
             this.locationInterface.onEditLocationClick(currentItem)
+
         }
     }
     fun delteLocation(position: Int){
@@ -70,4 +71,5 @@ class LocationAdapter(private val locationList : ArrayList<LocationData>,val con
         notifyItemRemoved(position)
         notifyItemRangeChanged(position,locationList.size-1)
     }
+
 }

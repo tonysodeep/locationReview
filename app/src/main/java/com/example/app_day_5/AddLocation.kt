@@ -12,7 +12,7 @@ class AddLocation : AppCompatActivity() {
         setContentView(R.layout.activity_add_location)
         setSupportActionBar(edit_toolbar)
         supportActionBar?.apply {
-            title = "edit location"
+            title = "add location"
         }
         bt_save.setOnClickListener {
             val addDate: String = ed_date.text.toString()
