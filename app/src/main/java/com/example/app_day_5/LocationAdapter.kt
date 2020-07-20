@@ -61,6 +61,9 @@ class LocationAdapter(private val locationList : ArrayList<LocationData>,val con
             this.locationInterface.onDeletItemClick()
             delteLocation(position)
         }
+        holder.buttonEdit.setOnClickListener {
+            this.locationInterface.onEditLocationClick(currentItem)
+        }
     }
     fun delteLocation(position: Int){
         locationList.removeAt(position)

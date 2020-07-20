@@ -84,6 +84,8 @@ class MainActivity : AppCompatActivity(),onItemClick {
 
     override fun onEditLocationClick(data: LocationData) {
         val intent = Intent(this,EditLocation::class.java)
+        intent.putExtra("edit_data",data)
+        startActivity(intent)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
