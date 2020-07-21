@@ -12,27 +12,38 @@ import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.location.view.*
 import org.w3c.dom.Text
 
-class LocationAdapter(private val locationList : ArrayList<LocationData>,val context: Context):
+class LocationAdapter(private val locationList: ArrayList<LocationData>, val context: Context) :
     RecyclerView.Adapter<LocationAdapter.LocationViewHolder>() {
-    lateinit var locationInterface : onItemClick
-    fun setLocationInterFace(inInterface : onItemClick){
+    lateinit var locationInterface: onItemClick
+    fun setLocationInterFace(inInterface: onItemClick) {
         this.locationInterface = inInterface
     }
-    class LocationViewHolder(locationView : View) : RecyclerView.ViewHolder(locationView){
-        val locationDate : TextView = locationView.date
-        val locationName : TextView = locationView.location_name
-        val locationDescription : TextView = locationView.location_description
-        val locationImage : ImageView = locationView.image_location
-        val locationFullDate : TextView = locationView.full_date
-        val locationFeedBack : TextView = locationView.location_feedback
-        val buttonShare : ImageView = locationView.bt_share
-        val buttonEdit : ImageView = locationView.bt_view
-        val buttonDelet : ImageView = locationView.bt_delete
-        val locationItem : ConstraintLayout = locationView.location_item
+
+    fun addItem(location: LocationData) {
+        locationList.add(location)
+        notifyDataSetChanged()
+    }
+    fun updateIteamAtPosidion(position: Int,location : LocationData){
+        locationList[position] = location
+        notifyItemChanged(position)
+    }
+
+    class LocationViewHolder(locationView: View) : RecyclerView.ViewHolder(locationView) {
+        val locationDate: TextView = locationView.date
+        val locationName: TextView = locationView.location_name
+        val locationDescription: TextView = locationView.location_description
+        val locationImage: ImageView = locationView.image_location
+        val locationFullDate: TextView = locationView.full_date
+        val locationFeedBack: TextView = locationView.location_feedback
+        val buttonShare: ImageView = locationView.bt_share
+        val buttonEdit: ImageView = locationView.bt_view
+        val buttonDelet: ImageView = locationView.bt_delete
+        val locationItem: ConstraintLayout = locationView.location_item
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LocationViewHolder {
-        var locationView = LayoutInflater.from(parent.context).inflate(R.layout.location,parent,false)
+        var locationView =
+            LayoutInflater.from(parent.context).inflate(R.layout.location, parent, false)
         return LocationViewHolder(locationView)
     }
 
@@ -54,7 +65,7 @@ class LocationAdapter(private val locationList : ArrayList<LocationData>,val con
         holder.buttonShare.setImageResource(currentItem.btShare)
         holder.buttonEdit.setImageResource(currentItem.btEdit)
         holder.buttonDelet.setImageResource(currentItem.btDelet)
-        holder.locationItem.setOnClickListener{
+        holder.locationItem.setOnClickListener {
             this.locationInterface.onLocationClick(currentItem)
         }
         holder.buttonDelet.setOnClickListener {
@@ -62,14 +73,15 @@ class LocationAdapter(private val locationList : ArrayList<LocationData>,val con
             delteLocation(position)
         }
         holder.buttonEdit.setOnClickListener {
-            this.locationInterface.onEditLocationClick(currentItem,position)
+            this.locationInterface.onEditLocationClick(currentItem, position)
 
         }
     }
-    fun delteLocation(position: Int){
+
+    fun delteLocation(position: Int) {
         locationList.removeAt(position)
         notifyItemRemoved(position)
-        notifyItemRangeChanged(position,locationList.size-1)
+        notifyItemRangeChanged(position, locationList.size - 1)
     }
 
 }

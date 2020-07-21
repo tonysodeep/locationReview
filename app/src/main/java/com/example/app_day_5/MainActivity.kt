@@ -4,15 +4,12 @@ import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Parcel
-import android.os.Parcelable
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
-import java.text.FieldPosition
 
 var locationArray = ArrayList<LocationData>()
 private lateinit var linearLayoutManager: LinearLayoutManager
@@ -20,6 +17,8 @@ private var addLocationCode : Int = 1
 private var editLocationCode : Int = 2
 private var editPositionInLocation : Int = 0
 class MainActivity : AppCompatActivity(),onItemClick {
+
+    lateinit var tourAdapter:LocationAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -29,7 +28,7 @@ class MainActivity : AppCompatActivity(),onItemClick {
         }
         linearLayoutManager = LinearLayoutManager(this)
         tour_rv.layoutManager = linearLayoutManager
-        var tourAdapter: LocationAdapter = LocationAdapter(createLocation(), this)
+        tourAdapter = LocationAdapter(createLocation(), this)
         tour_rv.adapter = tourAdapter
         tourAdapter.setLocationInterFace(this)
         tour_rv.setHasFixedSize(true)
@@ -56,7 +55,7 @@ class MainActivity : AppCompatActivity(),onItemClick {
         for (i in 1..10) {
             location = LocationData(
                 "05/03",
-                "da lat",
+                "da lat"+i,
                 "da lat tren vui" +
                         "\nciliekc me" +
                         "cuoc phieu luu ky thu",
@@ -97,20 +96,19 @@ class MainActivity : AppCompatActivity(),onItemClick {
         if (data != null) {
             if (requestCode == addLocationCode && resultCode == Activity.RESULT_OK) {
                 val location : LocationData = data.getSerializableExtra("return_location") as LocationData
-                locationArray.add(0,location)
-                var touradapter = LocationAdapter(locationArray,this)
-                tour_rv.adapter = touradapter
-                touradapter.setLocationInterFace(this)
+//                locationArray.add(0,location)
+//                var touradapter = LocationAdapter(locationArray,this)
+//                tour_rv.adapter = touradapter
+//                touradapter.setLocationInterFace(this)
+
+                tourAdapter.addItem(location)
 
             }else {
                 Log.d("AAA","CANCEL")
             }
             if (requestCode == editLocationCode && resultCode == Activity.RESULT_OK){
                 val locationEdit : LocationData = data.getSerializableExtra("edit_data") as LocationData
-                locationArray.set(editPositionInLocation,locationEdit)
-                var touradapter = LocationAdapter(locationArray,this)
-                tour_rv.adapter = touradapter
-                touradapter.setLocationInterFace(this)
+                tourAdapter.updateIteamAtPosidion(editPositionInLocation,locationEdit)
             }
             else{
                 Log.d("AAA","CANCEL EDIT")
