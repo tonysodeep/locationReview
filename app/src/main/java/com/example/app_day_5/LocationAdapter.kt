@@ -1,10 +1,10 @@
 package com.example.app_day_5
 
 import android.content.Context
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.location.view.*
 import org.w3c.dom.Text
 
 class LocationAdapter(private val locationList: ArrayList<LocationData>, val context: Context) :
-    RecyclerView.Adapter<LocationAdapter.LocationViewHolder>() {
+    RecyclerView.Adapter<LocationAdapter.LocationViewHolder>(){
     lateinit var locationInterface: onItemClick
     fun setLocationInterFace(inInterface: onItemClick) {
         this.locationInterface = inInterface
@@ -38,7 +38,7 @@ class LocationAdapter(private val locationList: ArrayList<LocationData>, val con
         val buttonShare: ImageView = locationView.bt_share
         val buttonEdit: ImageView = locationView.bt_view
         val buttonDelet: ImageView = locationView.bt_delete
-        val locationItem: ConstraintLayout = locationView.location_item
+        val locationItem: LinearLayout = locationView.root_element
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LocationViewHolder {
@@ -76,6 +76,14 @@ class LocationAdapter(private val locationList: ArrayList<LocationData>, val con
             this.locationInterface.onEditLocationClick(currentItem, position)
 
         }
+        holder.buttonShare.setOnClickListener {
+            this.locationInterface.onShareLocationName(currentItem.locaName)
+        }
+        holder.locationItem.setOnLongClickListener {
+            this.locationInterface.onLongClickItem(position,currentItem)
+            true
+        }
+
     }
 
     fun delteLocation(position: Int) {
@@ -83,5 +91,6 @@ class LocationAdapter(private val locationList: ArrayList<LocationData>, val con
         notifyItemRemoved(position)
         notifyItemRangeChanged(position, locationList.size - 1)
     }
+
 
 }

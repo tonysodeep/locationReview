@@ -8,7 +8,16 @@
         app:showAsAction="always" />
     <item
         android:id="@+id/action_paste"
-        android:title="ADD" />
+        android:title="ADD"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/delet_paste"
+        android:title="DELLET"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/edit_paste"
+        android:title="EDIT"
+        app:showAsAction="never"/>
 
 
 </menu>
